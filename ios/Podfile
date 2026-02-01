@@ -1,0 +1,74 @@
+#================================================
+# React Native 0.82 - Firebase 12+ - Hermes/Fabric
+# iOS 16 minimum
+#================================================
+
+platform :ios, '16.6'
+use_modular_headers!
+
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+# --- Fonction pour require scripts via Node ---
+def node_require(script)
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve('#{script}', {paths: [process.argv[1]]})", __dir__]).strip
+end
+
+# --- Charger les scripts nécessaires ---
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
+prepare_react_native_project!
+
+# Désactiver Flipper (incompatible avec use_frameworks! + Firebase)
+# use_flipper!()   # commenter ou supprimer
+
+target 'MyOEDB' do
+  config = use_native_modules!
+
+  # Pour que Firebase fonctionne correctement avec CocoaPods
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,      # indispensable pour RN 0.82
+    :fabric_enabled => true,      # recommandé RN 0.82
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+    # --- Permissions utilisées par l'app ---
+  setup_permissions([
+    'Camera',
+    'Microphone',
+    'LocationWhenInUse',
+    'LocationAlways',
+    'PhotoLibrary',
+    'Notifications'
+  ])
+
+   # --- Copier automatiquement les fonts de vector-icons ---
+  pre_install do |installer|
+    system("mkdir -p ./MyOEDB/Fonts")
+    system("cp -R ../node_modules/react-native-vector-icons/Fonts/* ./MyOEDB/Fonts/")
+  end
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+    )
+
+    # Fix pour architecture simulators + c++20
+    installer.pods_project.targets.each do |t|
+      t.build_configurations.each do |config|
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+      end
+    end
+  end
+end

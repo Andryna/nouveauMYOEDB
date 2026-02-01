@@ -1,0 +1,72 @@
+1 - AUTHENTIFICATION
+
+	API URL  : https://elearning.forma2plus.com/api-el-login-form,
+	METHOD   : POST,
+	POSTFIELD: array(
+		'login'       => 'RAKOTO',
+		'password'    => 'RAKOTO',
+		'plateform'   => 'android vers 16',
+		'ip_adress'   => '127.0.0.1'
+		),
+
+	=> Return JSON: Token
+
+
+2 - ADD TRACKING
+
+	API URL   : https://elearning.forma2plus.com/api-el-tracking-add,
+	METHOD    : POST,
+	HTTPHEADER: array(
+	    'Authorization: Bearer Token',
+	  ), 
+	POSTFIELD: array(
+		'page'     => 'Page test',
+		'menu'     => 'Menu test',
+		'module'   => 'module test',
+		'sequence' => 'sequence test',
+		'excerice' => 'excerice test',
+		'link'     => 'link tests'
+		),
+
+	=> Return JSON: array(
+		status => true,
+	 	tracking_id => value,
+	 	)
+
+
+3 - UPDATE TRACKING <!-- Cette API devra appeler à un intervale de temps afin de mettre à jours les durées et la fin de tracking (Ex: appeler cette API à chaque 5 seconces) -->
+
+	API URL   : https://elearning.forma2plus.com/api-el-tracking-update,
+	METHOD    : POST,
+	HTTPHEADER: array(
+	    'Authorization: Bearer Token',
+	  ), 
+	POSTFIELD: array(
+		'tracking_id' => tracking_id,
+		),
+
+	=> Return JSON: array(
+		status => true,
+	 	tracking_id => value,
+	 	)
+
+
+4 - UPDATE CONNEXION <!-- Cette API devra appeler à un intervale de temps afin de mettre à jours les durées et la fin de connexion (Ex: appeler cette API à chaque 5 seconces) -->
+
+	API URL   : https://elearning.forma2plus.com/api-el-session-update,
+	METHOD    : POST,
+	HTTPHEADER: array(
+	    'Authorization: Bearer Token',
+	  ), 
+	POSTFIELD: array(
+		'event' => '', //Envoi vide si la session n'est pas encore terminé sinon met la valeur 'fin_de_session' si l'utilisateur va se deconnecter, donc les valeurs possibles sont vide ou 'fin_de_session'
+		),
+
+	=> Return JSON: array(
+		"status" => true,
+	    "data" => {
+	        "connexion": "value",
+	        "tracking_id": "value",
+	        "session_destroy": "value"
+	    }
+	)

@@ -1,0 +1,130 @@
+export default {
+    // login
+    greeting: 'Anglais',
+    username:'Username',
+    password:'Password',
+    login:'LOGIN',
+    'use e-learning':'Use your Forma2+ elearning ID to start',
+    'Remember me': 'Remember me',
+    "Anglais":"English",
+    "Francais":"French",
+    "Espagnol":"Spanish",
+    "language":"language",
+
+    // home
+    'Welcome back':'Welcome back',
+    'home':'HOME',
+    'your':'Your',
+    'stats':'STATS',
+    'select':'Select',
+    'your task':'Your task',
+    'text expressions':'text expressions',
+    'pictures and videos':'pictures and videos',
+     'new record':'RECORDS',
+     'Add new expression':'New expression',
+     'Add new audio':'New audio',
+     'Record video and picture':'Video / picture',
+     'All expressions':'All expressions',
+     'View categories':'View categories',
+     'Your recordings':'Your recordings',
+     "this week":"this week",
+     "this month":"this month",
+     "this year":"this year",
+     "ALL EXPRESSIONSs":"ALL EXPRESSIONS",
+     "IMAGES DETAILS":"IMAGES DETAILS",
+
+     'List of':'List of',
+     'your expressions':'your expressions',
+     'Filter':'Filter',
+     'by keyword':'by keyword',
+     'Type your one or two words':'Type your one or two words',
+     'by date':'by date',
+     'Search':'Search',
+     'categories':'categories',
+     'See all':'See all',
+     'Nom du fichier:':'File name',
+     'Date de création:':'Creation date',
+     'Description:':'Description:',
+     'Image transcription:':'Image transcription:',
+
+     'search for expressions':'search for expressions ...',
+     'Translated:':'Translated:',
+     'Other language':'Other language',
+     'close':'Close',
+    //  reacord audio
+     'Record':'Record',
+     'Your recording language':'Your recording language',
+     "Category optional":"Category (optional)",
+     'Add New':'Add New',
+     'Enter your new category name':'Enter your new category name',
+     'Add':'Add',
+     'record audio':'RECORD AUDIO',
+     'REAL-TIME TRANSCRIPTION':'TRANSCRIPTION',
+     'CANCEL':'CANCEL',
+
+    //  video and ond picture
+    "video and picture":"video and picture",
+    "RECORD":"RECORD",
+    "Uploading":"Uploading",
+    "GET RECORDED FILE":"GET RECORDED FILE",
+     "Edit":"Edit",
+     "text":"text",
+     "your text":"your text",
+     "Translated text":"Translated text",
+     "SAVE":"SAVE",
+
+    //  add new expression
+     "new expression":"new expression",
+     "Enter your new term":"Enter your new term",
+     "Enter your translated term":"Enter your translated term",
+     "Target language":"Target language",
+     "CONFIRM":"CONFIRM",
+     "DELETING EXPRESSION":"DELETING EXPRESSION",
+     "Are you sure you want to delete this Expression":"Are you sure you want to delete this Expression",
+
+    //  Jitsi
+     "Get Jitsi":"Get Jitsi",
+     "Open Jitsi":"Open Jitsi",
+
+    //  newpic
+     "French":"French",
+     "Describe":"Describe",
+    //  sendpic
+    "Description text":"Description text",
+
+    // Category
+    "DELETING CATEGORY":"DELETING CATEGORY",
+    "Are you sure you want to delete this Category?":"Are you sure you want to delete this Category?",
+    "NO":"NO",
+    "YES":"YES",
+    "ALL CATEGORIES":"ALL CATEGORIES",
+    "Search for categories":"Search for categories ...",
+    "Category":"Category",
+    "Cat":"Category name",
+    "Description":"Description",
+    "Describe your category":"Describe your category",
+
+    // RECORDINGS
+    "RECORDINGS":"RECORDINGS",
+     "video":"video",
+     "DELETING VIDEO":"DELETING VIDEO",
+     "Are you sure you want to delete this video":"Are you sure you want to delete this video?",
+// RECORDE AUDIO
+    "RECORDE AUDIO":"RECORDE AUDIO",
+    "What do you whant with this audio File":"What do you whant with this audio File",
+    "Get transcription":"Get transcription",
+    "Tanscript and save":"Transcript and save",
+    "Your speech":"Your speech",
+    "translate to":"translate to",
+    "Uploading and transcripting":"Uploading and transcripting",
+    "DELETING AUDIO":"DELETING AUDIO",
+    "Are you sure you want to delete this Audio":"Are you sure you want to delete this Audio",
+    // speech to text
+    "Yoursp":"Your",
+    "Speech":"Speech",
+    "Clic the mic to Start/End":"Clic the mic to Start/End",
+    "DELETING EXPRESSION":"DELETING EXPRESSION",
+    "Are you sure you want to delete this expression":"Are you sure you want to delete this expression?",
+
+
+  };

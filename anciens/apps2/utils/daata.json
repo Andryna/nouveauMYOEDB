@@ -1,0 +1,109 @@
+const res = {
+  "Vocabulaire_et_lexicalite": {
+    "lexique": [
+      {
+        "interested": "intéressé"
+      },
+      {
+        "voice": "voix"
+      },
+      {
+        "body": "corps"
+      },
+      {
+        "style": "style"
+      },
+      {
+        "motivations": "motivations"
+      },
+      {
+        "politicians": "politiciens"
+      },
+      {
+        "voters": "électeurs"
+      }
+    ],
+    "niveau_de_langage": "Langage courant, adapté à un contexte académique et professionnel.",
+    "precision_des_termes": "Les termes sont précis, notamment dans le domaine de l'étude politique.",
+    "champs_lexicaux": [
+      {
+        "politique": [
+          "politicians",
+          "voters",
+          "elected",
+          "motivations"
+        ]
+      },
+      {
+        "communication": [
+          "voice",
+          "body",
+          "style",
+          "speaking"
+        ]
+      }
+    ],
+    "mots_abstraits_vs_concrets": {
+      "abstraits": [
+        "motivations",
+        "style"
+      ],
+      "concrets": [
+        "voice",
+        "body"
+      ]
+    }
+  },
+  "Structure_grammaticale": {
+    "syntaxique": [
+      {
+        "phrase_complexe": "La structure de la phrase principale est complexe mais fluide."
+      },
+      {
+        "usage_des_prepositions": [
+          {
+            "interested in": "'in' utilisé correctement après 'interested'."
+          },
+          {
+            "with the voice / with the body": "'with' pour indiquer les éléments concernés."
+          }
+        ]
+      }
+    ],
+    "variete_des_structures": "Alternance entre phrases simples et complexes.",
+    "concordance_des_temps": "Utilisation correcte du présent simple.",
+    "ponctuation": "Ponctuation correcte, notamment l'usage des virgules pour structurer la phrase."
+  },
+  "Coherence_et_cohesion": {
+    "logique_interne": "Le texte est cohérent et les idées s'enchaînent logiquement.",
+    "connecteurs_logiques": "Absence de connecteurs logiques explicites, mais les idées sont naturellement connectées.",
+    "progression_thematique": "Le passage passe d'une idée générale (voix, corps, style) à une application spécifique (politiciens).",
+    "repetitions_et_redundances": "Aucune répétition inutile."
+  },
+  "Qualite_stylistique_et_rhetorique": {
+    "figures_de_style": "Aucune figure de style notable.",
+    "impact_emotionnel": "Peu d'impact émotionnel ; le texte est davantage factuel.",
+    "redundances": "Aucune redondance apparente.",
+    "effets_de_rhetorique": "Absence de procédés rhétoriques (texte descriptif)."
+  },
+  "Pertinence_thematique": {
+    "respect_du_sujet": "Le texte reste centré sur le thème de l'analyse du style de communication.",
+  },
+  "Dimension_interculturelle_ou_sociale": {
+    "references_culturelles": [
+      {
+        "Barack Obama": "Référence à une figure politique mondiale."
+      }
+    ],
+    "sensibilite_sociale": "Neutre, aucune problématique éthique ou sociale soulevée.",
+    "valeurs_implicites": "Importance accordée à la communication dans le domaine politique."
+  },
+  "Accessibilite_et_lisibilite": {
+    "complexite_du_texte": "Texte accessible, vocabulaire compréhensible.",
+    "indice_de_lisibilite": "Lisibilité élevée, phrases bien structurées et sans jargon complexe.",
+    "adaptation_au_public": "Convient à un public académique ou professionnel."
+  },
+  "Aspects_esthetiques": {
+    "creation_d_images": "Aucune image mentale forte créée ; texte descriptif et factuel.",
+  }
+}
