@@ -699,7 +699,7 @@ renderItem = (item) => {
                 <View style={{ width: wp('90%'), alignSelf: 'center', marginTop: hp('3%'), alignItems:'center'}}>
                   {/* <Text style={{color:'white'}}>test</Text> */}
                   <TouchableOpacity onPress={this.toggleDropdownOrig} style={styles.selector}>
-                    <Text style={styles.selectorText}>Original language {infolangue}</Text>
+                    <Text style={styles.selectorText}>Original language</Text>
                     <Icon
                       name={isDropdownVisibleOrig ? "chevron-up" : "chevron-down"}
                       size={30}
@@ -922,7 +922,7 @@ renderItem = (item) => {
               <View style={{ width: wp('90%'), alignSelf: 'center', justifyContent: 'space-around', marginTop: hp('3%')}}>
                 {/* <Text style={{color:'white'}}>test</Text> */}
                 <TouchableOpacity onPress={this.toggleDropdown} style={styles.selector}>
-                  <Text style={styles.selectorText}>Translate to {target_langue}</Text>
+                  <Text style={styles.selectorText}>Translate to</Text>
                   <Icon
                     name={isDropdownVisible ? "chevron-up" : "chevron-down"}
                     size={30}

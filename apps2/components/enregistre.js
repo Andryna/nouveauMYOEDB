@@ -399,61 +399,173 @@ getAudioPermissionType = () => {
   };
 
   stop = async () => {
+  try {
+    if (!this.state.recording) return;
+
+    console.log('Stopping record...');
+
+    if (!AudioRecord) {
+      console.log('AudioRecord is not initialized');
+      return;
+    }
+
+    // 1) Stop enregistrement
+    const audioFile = await AudioRecord.stop();
+    console.log('Audio file:', audioFile);
+
+    // 2) Libérer le micro / ressources natives (évite TTS muet)
+    if (typeof AudioRecord.destroy === 'function') {
+      AudioRecord.destroy();
+      console.log('AudioRecord destroyed (micro libéré)');
+    }
+
+    // 3) Laisser le temps au système de rendre le focus audio
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    // 4) Remettre la catégorie audio côté playback (si supporté)
     try {
-      if (!this.state.recording) return;
-  
-      console.log('Stopping record...');
-      if (!AudioRecord) {
-        console.log('AudioRecord is not initialized');
+      if (typeof Sound?.setCategory === 'function') {
+        Sound.setCategory('Playback');
+        console.log('Audio category set to Playback');
+      }
+    } catch (e) {
+      console.warn('Sound.setCategory not supported:', e);
+    }
+
+    // 5) Mise à jour state
+    this.setState({ audioFile, recording: false });
+
+    // 6) Récup taille fichier
+    try {
+      const res = await RNFS.stat(audioFile);
+      const resp = {
+        path: audioFile,
+        size: res.size,
+        fileName: 'test.wav',
+        type: 'audio/wav',
+      };
+      console.log('resp', resp);
+      this.setState({ response: resp });
+    } catch (error) {
+      console.error('Erreur lors de la lecture de la taille du fichier:', error);
+    }
+
+    // 7) Calcul durée (et release pour éviter des soucis)
+    const sound = new Sound(audioFile, '', (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
         return;
       }
-  
-      let audioFile = await AudioRecord.stop();
-      console.log('Audio file:', audioFile);
-  
-      this.setState({ audioFile, recording: false });
-      RNFS.stat(audioFile)
-      .then(res => {
-        const fileSizeInBytes = res.size;
-    
-        // Créez un objet de fichier à partir du chemin du fichier audio
-        const resp = {
-          path: audioFile,
-          size: fileSizeInBytes,
-          fileName: 'test.wav',
-          type: 'audio/wav' // Type MIME du fichier
-          // Ajoutez d'autres propriétés si nécessaire
-        };
-        console.log('resp', resp);
-        this.setState({
-          response: resp
-        });
-      })
-      .catch(error => {
-        console.error('Erreur lors de la lecture de la taille du fichier:', error);
-      });
-      // this.timerRef.current.stop();
-  
-      const sound = new Sound(audioFile, '', (error) => {
-        if (error) {
-          console.log('failed to load the sound', error);
-          return;
-        }
-        const duration = sound.getDuration();
-        const hours = Math.floor(duration / 3600);
-        const minutes = Math.floor((duration - (hours * 3600)) / 60);
-        const seconds = Math.floor(duration - (hours  *3600) - (minutes * 60));
-        const formattedHours = hours.toString().padStart(2, '0');
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const formattedSeconds = seconds.toString().padStart(2, '0');
-        const audiotime =  `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-        this.setState({duration:audiotime, durationInSeconds: duration });
-        console.log(audiotime);
-      });
-       } catch (error) {
-      console.error('Error stopping recording:', error);
-    }
+
+      const duration = sound.getDuration();
+      const hours = Math.floor(duration / 3600);
+      const minutes = Math.floor((duration - hours * 3600) / 60);
+      const seconds = Math.floor(duration - hours * 3600 - minutes * 60);
+
+      const audiotime =
+        `${String(hours).padStart(2, '0')}:` +
+        `${String(minutes).padStart(2, '0')}:` +
+        `${String(seconds).padStart(2, '0')}`;
+
+      this.setState({ duration: audiotime, durationInSeconds: duration });
+      console.log(audiotime);
+
+      // important : libère l'objet Sound
+      sound.release();
+    });
+
+  } catch (error) {
+    console.error('Error stopping recording:', error);
   }
+};
+
+  // stopRec = async () => {
+  //   this.timerRef.current.pause();
+  //   this.startBlinking();
+  
+  //   if (!this.state.recording) return;
+  
+  //   try {
+  //     console.log('Stopping record...');
+  
+  //     if (!AudioRecord) {
+  //       console.log('AudioRecord is not initialized');
+  //       return;
+  //     }
+  
+  //     // ⏹️ 1. Arrêter proprement l’enregistrement
+  //     let audioFile = await AudioRecord.stop();
+  //     console.log('Audio file:', audioFile);
+  
+  //     // 🧹 2. Libérer le flux micro pour éviter le bug TTS muet
+  //     if (AudioRecord.destroy) {
+  //       AudioRecord.destroy();
+  //       console.log('AudioRecord destroyed (micro libéré)');
+  //     }
+  
+  //     // 🕐 3. Attendre un court instant que le système libère le focus audio
+  //     await new Promise(resolve => setTimeout(resolve, 500));
+  
+  //     // 🔊 4. Réinitialiser la catégorie audio pour la lecture
+  //     try {
+  //       Sound.setCategory('Playback');
+  //       console.log('Audio category set to Playback');
+  //     } catch (e) {
+  //       console.warn('Sound category not supported:', e);
+  //     }
+  
+  //     // 5️⃣ Mise à jour de l’état (inchangé)
+  //     this.setState({
+  //       audioFile,
+  //       recording: false,
+  //       stoped: true,
+  //       expres: 'efa niova ny texte'
+  //     }, async () => {
+  
+  //       // 6️⃣ Lecture des infos du fichier audio
+  //       RNFS.stat(audioFile)
+  //         .then(res => {
+  //           const fileSizeInBytes = res.size;
+  //           const resp = {
+  //             path: audioFile,
+  //             size: fileSizeInBytes,
+  //             fileName: 'test.wav',
+  //             type: 'audio/wav',
+  //           };
+  //           console.log('resp', resp);
+  //           this.setState({
+  //             response: resp
+  //           });
+  //         })
+  //         .catch(error => {
+  //           console.error('Erreur lors de la lecture de la taille du fichier:', error);
+  //         });
+  
+  //       // 7️⃣ Calcul de la durée du fichier
+  //       const sound = new Sound(audioFile, '', (error) => {
+  //         if (error) {
+  //           console.log('failed to load the sound', error);
+  //           return;
+  //         }
+  
+  //         const duration = sound.getDuration();
+  //         const hours = Math.floor(duration / 3600);
+  //         const minutes = Math.floor((duration - (hours * 3600)) / 60);
+  //         const seconds = Math.floor(duration - (hours * 3600) - (minutes * 60));
+  //         const formattedHours = hours.toString().padStart(2, '0');
+  //         const formattedMinutes = minutes.toString().padStart(2, '0');
+  //         const formattedSeconds = seconds.toString().padStart(2, '0');
+  //         const audiotime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  //         this.setState({ duration: audiotime, durationInSeconds: duration });
+  //         console.log(audiotime);
+  //       });
+  //       await this.transcript();
+  //     });
+  
+  //   } catch (error) {
+  //     console.error('Error stopping recording:', error);
+  //   }
+  // };
 
   load = () => {
     return new Promise((resolve, reject) => {
@@ -940,38 +1052,66 @@ onSliderEditing = (value) => {
     // alert(itemValue);
     // Vous pouvez ajouter d'autres logiques ici si nécessaire
   };
-  handleSaveCat = async () =>{
-    const {userInfo} = this.props;
-    // this.setState({ ActivityIndicator_Loading: true }, () => {
-    //   fetch('https://elprod.forma2plus.com/portail-stagiaire/savecat.php', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       categ: this.state.newCategory,
-    //       desc: 'description',
-    //       id_groupe: userInfo.id_groupe,
-    //       id: userInfo.id
-    //     })
-    //   }).then((response) => response.json()).then((reponse) => {
-    //     this.props.getCat(userInfo.id_groupe)
-    //     .then(() => {
-    //       // alert('picture saved');
-    //       this.setState({category:this.props.category, selectedCategory: this.props.category[0].id, showInput:false});
-    //       alert('theme added succesfuly');
-    //       // console.log(reponse);
-    //     })
+  // handleSaveCat = async () =>{
+  //   const {userInfo} = this.props;
+  //   // this.setState({ ActivityIndicator_Loading: true }, () => {
+  //   //   fetch('https://elprod.forma2plus.com/portail-stagiaire/savecat.php', {
+  //   //     method: 'POST',
+  //   //     headers: {
+  //   //       'Accept': 'application/json',
+  //   //       'Content-Type': 'application/json',
+  //   //     },
+  //   //     body: JSON.stringify({
+  //   //       categ: this.state.newCategory,
+  //   //       desc: 'description',
+  //   //       id_groupe: userInfo.id_groupe,
+  //   //       id: userInfo.id
+  //   //     })
+  //   //   }).then((response) => response.json()).then((reponse) => {
+  //   //     this.props.getCat(userInfo.id_groupe)
+  //   //     .then(() => {
+  //   //       // alert('picture saved');
+  //   //       this.setState({category:this.props.category, selectedCategory: this.props.category[0].id, showInput:false});
+  //   //       alert('theme added succesfuly');
+  //   //       // console.log(reponse);
+  //   //     })
         
-    //     // this.getPicker();
-    //     // this.setState({ ActivityIndicator_Loading: false });
-    //   }).catch((error) => {
-    //     console.error(error);
-    //     this.setState({ ActivityIndicator_Loading: false });
-    //   });
-    // });
-  }
+  //   //     // this.getPicker();
+  //   //     // this.setState({ ActivityIndicator_Loading: false });
+  //   //   }).catch((error) => {
+  //   //     console.error(error);
+  //   //     this.setState({ ActivityIndicator_Loading: false });
+  //   //   });
+  //   // });
+  // }
+  handleSaveCat = async () =>{
+  const {userInfo} = this.props;
+  // alert('save');
+  this.setState({ ActivityIndicator_Loading: true }, () => {
+    fetch('https://elprod.forma2plus.com/portail-stagiaire/savecat.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        categ: this.state.newCategory,
+        desc: 'description',
+        id_groupe: userInfo.id_groupe,
+        id: userInfo.id
+      })
+    }).then((response) => response.json()).then((reponse) => {
+      this.props.getCat(userInfo.id_groupe)
+      .then(() => {
+        this.setState({category:this.props.category, selectedCategory: this.props.category[0].id, showInput:false});
+        alert('theme added succesfuly');
+      })
+    }).catch((error) => {
+      console.error(error);
+      this.setState({ ActivityIndicator_Loading: false });
+    });
+  });
+}
  
   render() {
     const { recording, paused, audioFile } = this.state;

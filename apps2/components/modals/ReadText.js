@@ -405,7 +405,7 @@ setPlayingStatusTrad = ({ isLoading, isPlaying }) => {
     });
 };
 handlePlay = () => {
-  alert("playing");
+  // alert("playing");
     if (this.state.isLoadingAudio) return;
     readText2(this.state.selectedText, this.setPlayingStatus, this.state.langue, this.state.voiceType, this.state.voiceSpeed);
 };
